@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+# WANT_JSON
+
+require 'rubygems'
+require 'json'
+
+File.open(ARGV[0]) do |arguments_stream|
+  begin
+    data      = JSON.parse(arguments_stream.read)
+    dir_path  = data.fetch 'dir_path'
+    exists    = File.exists?(dir_path)
+    directory = exists    ? File.directory?(dir_path)   : false
+    empty     = directory ? Dir["#{dir_path}/*"].empty? : nil
+
+    result = {
+      exists:    exists,
+      directory: directory,
+      empty:     empty
+    }
+
+    print JSON.dump(result)
+  rescue JSON::ParserError
+    print JSON.dump({
+                      failed: true,
+                      msg:    'failed to parse dir_path argument'
+                    })
+  rescue KeyError
+    print JSON.dump({
+                      failed: true,
+                      msg:    'dir_path key not found'
+                    })
+  end
+end
