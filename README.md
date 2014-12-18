@@ -19,7 +19,7 @@ You can find the usage by looking either at `stat.yml` or at library code itself
 You can call action for given path:
 
       - name:     call stat action
-        action:   stat dir_path=/
+        stat:     dir_path=/
         register: stat
         
 The `stat` will be the following json:
