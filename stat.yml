@@ -9,75 +9,75 @@
     - name: install ruby
       yum:  pkg=ruby state=installed
 
-    - name:   ensure the ruby JSON gem is installed
-      action: gem name=json state=present
+    - name: ensure the ruby JSON gem is installed
+      gem:  name=json state=present
 
       ###
       #   DIRECTORY
       ###
     - name:     call stat action
-      action:   stat dir_path=/
+      stat:     dir_path=/
       register: stat
 
     - debug: msg="{{ stat }}"
 
     - name:   fail when path does not exist
-      action: fail msg='path does not exist'
+      fail:   msg='path does not exist'
       when:   stat.exists == false
 
     - name:   pass when path exists
-      action: debug msg='path exists'
+      debug:  msg='path exists'
       when:   stat.exists == true
 
     - name:   fail when path is not a direcotry
-      action: fail msg='path is not a direcotry'
+      fail:   msg='path is not a direcotry'
       when:   stat.directory == false
 
     - name:   pass when path is a direcotry
-      action: debug msg='path is a direcotry'
+      debug:  msg='path is a direcotry'
       when:   stat.directory == true
 
     - name:   fail when path is empty
-      action: fail msg='path is empty'
+      fail:   msg='path is empty'
       when:   stat.empty == true
 
     - name:   pass when path is not empty
-      action: debug msg='path is not empty'
+      debug:  msg='path is not empty'
       when:   stat.empty == false
 
     - name:     call stat action
-      action:   stat wrong_key=/
+      stat:     wrong_key=/
       ignore_errors: yes
 
       ###
       #   FILE
       ###
     - name:     call stat action
-      action:   stat dir_path=/usr/bin/ruby
+      stat:     dir_path=/usr/bin/ruby
       register: stat
 
     - debug: msg="{{ stat }}"
 
     - name:   fail when path does not exist
-      action: fail msg='path does not exist'
+      fail:   msg='path does not exist'
       when:   stat.exists == false
 
     - name:   pass when path exists
-      action: debug msg='path exists'
+      debug:  msg='path exists'
       when:   stat.exists == true
 
     - name:   fail when path is a direcotry
-      action: fail msg='path is a direcotry'
+      fail:   msg='path is a direcotry'
       when:   stat.directory == true
 
     - name:   pass when path is not a direcotry
-      action: debug msg='path is not a direcotry'
+      debug:  msg='path is not a direcotry'
       when:   stat.directory == false
 
     - name:   fail when path is empty
-      action: fail msg='path is empty'
+      fail:   msg='path is empty'
       when:   stat.empty
 
     - name:   pass when path is file
-      action: debug msg='path is file'
+      debug:  msg='path is file'
       when:   not stat.empty
