@@ -1,0 +1,86 @@
+---
+- hosts:        all
+  gather_facts: no
+  sudo:         yes
+  tasks:
+      ###
+      #   SETUP
+      ###
+    - name: install ruby
+      yum:  name=ruby
+
+    - name: ensure the ruby JSON gem is installed
+      gem:  name=json
+
+      ###
+      #   WRONG USAGE
+      ###
+    - name:          call status with wrong argument
+      status:        wrong_key=/
+      ignore_errors: yes
+
+      ###
+      #   DIRECTORY
+      ###
+    - name:     call status action for root directory path
+      status:   dir_path=/
+      register: status_of_root
+
+    - debug: msg="{{ status_of_root }}"
+
+    - name:  fail when path does not exist
+      fail:  msg='path does not exist'
+      when:  status_of_root.exists == false
+
+    - name:  pass when path exists
+      debug: msg='path exists'
+      when:  status_of_root.exists == true
+
+    - name:  fail when path is not a direcotry
+      fail:  msg='path is not a direcotry'
+      when:  status_of_root.directory == false
+
+    - name:  pass when path is a direcotry
+      debug: msg='path is a direcotry'
+      when:  status_of_root.directory == true
+
+    - name:  fail when path is empty
+      fail:  msg='path is empty'
+      when:  status_of_root.empty == true
+
+    - name:  pass when path is not empty
+      debug: msg='path is not empty'
+      when:  status_of_root.empty == false
+
+      ###
+      #   FILE
+      ###
+    - name:     call status action for file
+      stat:     dir_path=/usr/bin/ruby
+      register: status_of_ruby_executable
+
+    - debug: msg="{{ status_of_ruby_executable }}"
+
+    - name: fail when path does not exist
+      fail: msg='path does not exist'
+      when: status_of_ruby_executable.exists == false
+
+    - name:  pass when path exists
+      debug: msg='path exists'
+      when:  status_of_ruby_executable.exists == true
+
+    - name:  fail when path is a direcotry
+      fail:  msg='path is a direcotry'
+      when:  status_of_ruby_executable.directory == true
+
+    - name:  pass when path is not a direcotry
+      debug: msg='path is not a direcotry'
+      when:  status_of_ruby_executable.directory == false
+
+    - name:  fail when path is empty
+      fail:  msg='path is empty'
+      when:  status_of_ruby_executable.empty
+
+    - name:  pass when path is file
+      debug: msg='path is file'
+      when:  not status_of_ruby_executable.empty
