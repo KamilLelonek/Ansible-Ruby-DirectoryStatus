@@ -56,7 +56,7 @@
       #   FILE
       ###
     - name:     call status action for file
-      stat:     dir_path=/usr/bin/ruby
+      status:   dir_path=/usr/bin/ruby
       register: status_of_ruby_executable
 
     - debug: msg="{{ status_of_ruby_executable }}"
