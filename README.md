@@ -12,17 +12,17 @@ This is an example of ruby library to be executed by Ansible.
 
 ## Usage
 
-You can find the usage by looking either at `stat.yml` or at library code itself (`library/stat`).
+You can find the usage by looking either at `status.yml` or at library code itself (`library/status`).
 
 ## Description
 
 You can call action for given path:
 
-      - name:     call stat action
-        stat:     dir_path=/
-        register: stat
+      - name:     call status action
+        status:   dir_path=/
+        register: status_of_path
         
-The `stat` will be the following json:
+The `status_of_path` will be the following json:
 
     {
       exists:    true/false
