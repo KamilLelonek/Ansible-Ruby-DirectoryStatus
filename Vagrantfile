@@ -7,6 +7,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = 'chef/centos-7.0'
 
   config.vm.provision :ansible do |ansible|
-    ansible.playbook = 'stat.yml'
+    ansible.playbook = 'status.yml'
   end
 end
